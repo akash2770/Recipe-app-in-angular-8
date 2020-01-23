@@ -8,6 +8,8 @@ import { ShoppingListService } from '../shopping-list/shopping-list.service';
 @Injectable()
 export class RecipeService {
 
+  recipeWasChanged = new Subject<Recipe[]>();
+
   private recipes: Recipe[] = [
     new Recipe(
       'Tasty Schnitzel',
@@ -36,7 +38,23 @@ export class RecipeService {
     return this.recipes[index];
   }
 
+  addRecipe(recipe:Recipe){
+    this.recipes.push(recipe);
+    this.recipeWasChanged.next(this.recipes.slice());
+  }
+
+  updateRecipe(index:number, updateRecipe:Recipe){
+    this.recipes[index] = updateRecipe;
+    this.recipeWasChanged.next(this.recipes.slice());
+  }
+  
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.slService.addIngredients(ingredients);
   }
+  
+  deleteRecipe(index:number){
+    this.recipes.splice(index, 1);
+    this.recipeWasChanged.next(this.recipes.slice());
+  }
+
 }
