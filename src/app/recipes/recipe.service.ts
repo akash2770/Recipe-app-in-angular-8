@@ -39,7 +39,7 @@ export class RecipeService {
   }
 
   addRecipe(recipe:Recipe){
-    this.recipes.push(recipe);
+    this.recipes.unshift(recipe);
     this.recipeWasChanged.next(this.recipes.slice());
   }
 
